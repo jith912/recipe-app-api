@@ -1,0 +1,24 @@
+version: "3.9"
+
+# a docker compose file consists of one or more services
+services:
+#app is the name of our service
+  app:
+  # build section hosts the build related configuration
+    build:
+    # the . indicates that we need to build the docker image in the current directory
+      context: .
+      # this section is used to override the args used in the Dockerfile.
+      # when run via this docker-compose configuration, the args are overridden.
+      args:
+        - DEV=true
+    ports:
+    # this maps the port 8000 in the local machine to the port 8000 in the docker container
+      - "8000:8000"
+    volumes:
+    # this maps the directories in our machine to the directories inside the app container and vice versa.
+    # with this mapping the code changes done in the laptop are automatically reflected in the running container without rebuilding the container
+    # this automatically syncs the code running in our laptop to the code in the container
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
