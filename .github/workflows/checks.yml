@@ -1,6 +1,6 @@
 ---
 # the name of the file could be anything
-
+# name of the workflow
 name: checks
 
 # the triggers on which the tasks have to be run
@@ -11,7 +11,7 @@ jobs:
   test-lint:
     name: Test and Lint
     runs-on: ubuntu-20.04
-    # the steps are executed in the order they are put in this file
+    # the steps/actions are executed in the order they are put in this file
     steps:
       - name: Login to Docker hub
         #  this is a pre built action available out of the box in the github. The below action is a docker container available in the docker repository
@@ -22,6 +22,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test
-        run: docker-compose run --rm app sh -c "python manage.py test"
+        run: docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py test"
       - name: Lint
         run: docker-compose run --rm app sh -c "flake8"
